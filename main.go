@@ -13,7 +13,19 @@ func main() {
 	models.Migrate(config.DB)
 
 	r := gin.Default()
+
+	// CREATE
 	r.POST("/bioskop", controllers.CreateBioskop)
+
+	// READ
+	r.GET("/bioskop", controllers.GetAllBioskop)
+	r.GET("/bioskop/:id", controllers.GetBioskopById)
+
+	// UPDATE
+	r.PUT("/bioskop/:id", controllers.UpdateBioskop)
+
+	// DELETE
+	r.DELETE("/bioskop/:id", controllers.DeleteBioskop)
 
 	r.Run(":8080")
 }
