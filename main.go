@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"tugas13-bioskop/config"
 	"tugas13-bioskop/controllers"
 	"tugas13-bioskop/models"
@@ -27,5 +28,10 @@ func main() {
 	// DELETE
 	r.DELETE("/bioskop/:id", controllers.DeleteBioskop)
 
-	r.Run(":8080")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	r.Run(":" + port)
 }
