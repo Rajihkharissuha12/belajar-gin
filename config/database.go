@@ -3,6 +3,7 @@ package config
 import (
 	"log"
 	"os"
+	"strings"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -11,13 +12,14 @@ import (
 var DB *gorm.DB
 
 func ConnectDatabase() {
-	dsn := os.Getenv("DATABASE_URL") // Railway memberikan ini
+	dsn := os.Getenv("DATABASE_URL")
 	if dsn == "" {
 		log.Fatal("DATABASE_URL tidak ditemukan")
 	}
 
-	// Railway butuh sslmode=require agar connect
-	dsn = dsn + " sslmode=require"
+	// Railway biasanya memberi sslmode=disable → harus kita ganti
+	// supaya tidak merusak struktur URL
+	dsn = strings.Replace(dsn, "sslmode=disable", "sslmode=require", 1)
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
